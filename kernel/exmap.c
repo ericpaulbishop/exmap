@@ -392,7 +392,7 @@ int setup_from_pid(pid_t pid)
 	struct task_struct *tsk;
 	int errcode = -EINVAL;
 
-	tsk = find_task_by_pid_type_ns(PIDTYPE_PID, pid, &init_pid_ns);
+	tsk = pid_task(find_vpid(pid), PIDTYPE_PID);
 	if (tsk == NULL) {
 		printk (KERN_ALERT
 			"/proc/%s: can't find task for pid %d\n",
@@ -515,7 +515,6 @@ int init_module ()
 	
 	exmap_proc_file->read_proc = procfile_read;
 	exmap_proc_file->write_proc = procfile_write;
-	exmap_proc_file->owner = THIS_MODULE;
 	
 	/*     exmap_proc_file->mode         = S_IFREG | S_IRUGO; */
 	/* TODO - this is quite probably a security problem */
